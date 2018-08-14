@@ -2,9 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileInfo>
 #include "taglib\fileref.h"
 #include "taglib\tag.h"
 #include "taglib\tpropertymap.h"
+#include "taglib\flacfile.h"
 class QMimeData;
 namespace Ui {
 class MainWindow;
@@ -26,6 +28,7 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+    void clear();
 
 signals:
     void changed(const QMimeData *mimeData = nullptr);

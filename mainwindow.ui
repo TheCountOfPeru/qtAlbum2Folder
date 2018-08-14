@@ -145,6 +145,11 @@
         </item>
         <item>
          <property name="text">
+          <string>24bit FLAC</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>320</string>
          </property>
         </item>
