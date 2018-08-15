@@ -37,26 +37,17 @@ void MainWindow::dropEvent(QDropEvent *event)
        ui->lineEditresult->setText(tr("Cannot display data"));
        return;
     }
-
-    event->acceptProposedAction();
-
     //Next is to read the dropped file and make the appropriate updates to the gui.
-    QString droppedFilePath(mimeData->text());
+    QString droppedFilePath(QString::fromUtf8(mimeData->text()));
     droppedFilePath = droppedFilePath.replace("file:///", "");
-    //QString x;
-
-    //x= "C:/Users/Jonathan/Downloads/JPOPSUKI/01 Ready25.flac";
 
     QFileInfo fi(droppedFilePath);
     //Get the suffix of the file. To determine the encoding type later
     QString ext = fi.suffix();
-    qDebug()<<ext;
     //Convert the QString of the path to the file to a c-string. Taglib only accepts a c-string in its constructor
     QByteArray ba = droppedFilePath.toLatin1();
 
     const char *c_str2 = ba.data();
-
-    qDebug()<<c_str2;
 
     TagLib::FileRef f(c_str2);
     if(!f.isNull()){
@@ -76,14 +67,7 @@ void MainWindow::dropEvent(QDropEvent *event)
             ui->comboBoxcodec->setCurrentIndex(2);
         }
         else if(ext == "FLAC" || ext == "flac"){
-             qDebug()<<"ghjgfhj";
-            TagLib::FLAC::File flcfile(c_str2);
-            TagLib::FLAC::Properties flcprop(&flcfile);
-            qDebug()<<flcprop.channels();
-            //if(QString::number(flc.audioProperties()->bitsPerSample())=="24"){
-                //ui->comboBoxcodec->setCurrentIndex(1);
-           // }else
-            //ui->comboBoxcodec->setCurrentIndex(0);
+             ui->comboBoxcodec->setCurrentIndex(0);
         }
         else if(ext == "m4a"){
             ui->comboBoxcodec->setCurrentIndex(4);
@@ -91,8 +75,7 @@ void MainWindow::dropEvent(QDropEvent *event)
         }
 
     }
-
-
+    event->acceptProposedAction();
 }
 
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
@@ -115,4 +98,22 @@ void MainWindow::clear(){
     ui->lineEditresult->setText("");
     ui->comboBoxcodec->setCurrentIndex(0);
     ui->comboBoxsource->setCurrentIndex(0);
+}
+
+void MainWindow::on_pushButtonApply_clicked()
+{
+    QString result = "";
+    result.append(ui->lineEditartist->text() + " - ");
+    result.append(ui->lineEditname->text() + " ");
+    result.append("("+ui->lineEditdate->text()+") ");
+    result.append("["+ui->comboBoxsource->currentText());
+    result.append(" "+ui->comboBoxcodec->currentText()+"]");
+    ui->lineEditresult->setText(result);
+}
+
+void MainWindow::on_pushButtonCopy_clicked()
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    //QString originalText = clipboard->text();
+    clipboard->setText(ui->lineEditresult->text());
 }
