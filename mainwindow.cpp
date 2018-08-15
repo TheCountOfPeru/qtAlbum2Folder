@@ -38,7 +38,7 @@ void MainWindow::dropEvent(QDropEvent *event)
        return;
     }
     //Next is to read the dropped file and make the appropriate updates to the gui.
-    QString droppedFilePath(QString::fromUtf8(mimeData->text()));
+    QString droppedFilePath(mimeData->text());
     droppedFilePath = droppedFilePath.replace("file:///", "");
 
     QFileInfo fi(droppedFilePath);
