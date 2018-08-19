@@ -39,22 +39,25 @@ void MainWindow::dropEvent(QDropEvent *event)
     }
     //Next is to read the dropped file and make the appropriate updates to the gui.
     QString droppedFilePath(mimeData->text());
+
     droppedFilePath = droppedFilePath.replace("file:///", "");
 
     QFileInfo fi(droppedFilePath);
     //Get the suffix of the file. To determine the encoding type later
     QString ext = fi.suffix();
     //Convert the QString of the path to the file to a c-string. Taglib only accepts a c-string in its constructor
-    QByteArray ba = droppedFilePath.toLatin1();
+    //QByteArray ba = droppedFilePath.toLocal8Bit();
 
-    const char *c_str2 = ba.data();
-
-    TagLib::FileRef f(c_str2);
+    //const char *c_str2 = ba.data();
+    //droppedFilePath.toStdString().c_str();
+    //ui->lineEditresult->setText(droppedFilePath.toStdString().c_str());
+    TagLib::FileRef f(QFile::encodeName(droppedFilePath).constData(), true);
+    ui->lineEditresult->setText(QFile::encodeName(droppedFilePath).constData());
     if(!f.isNull()){
         TagLib::Tag *tag = f.tag();
 
-        ui->lineEditartist->setText(tag->artist().toCString());
-        ui->lineEditname->setText(tag->album().toCString());
+        ui->lineEditartist->setText(QString::fromStdString(tag->artist().to8Bit(true)));//to8bit makes sure unicode is displayed
+        ui->lineEditname->setText(QString::fromStdString(tag->album().to8Bit(true)));
         //Check if a year of release exists. If it doesnt set the date field to empty
         if(!(QString::number(tag->year())=='0')){
             ui->lineEditdate->setText(QString::number(tag->year()));
