@@ -38,10 +38,13 @@ void MainWindow::dropEvent(QDropEvent *event)
        return;
     }
     //Next is to read the dropped file and make the appropriate updates to the gui.
-    QString droppedFilePath(mimeData->text());
+    QString droppedFilePath(mimeData->text());//text() returns a QString
 
     droppedFilePath = droppedFilePath.replace("file:///", "");
-
+    //std::string droppedFilePaths = droppedFilePath.toStdString();
+    wchar_t *path = new wchar_t[droppedFilePath.length() + 1];
+    droppedFilePath.toWCharArray(path);
+    path[droppedFilePath.length()] = 0;
     QFileInfo fi(droppedFilePath);
     //Get the suffix of the file. To determine the encoding type later
     QString ext = fi.suffix();
@@ -51,9 +54,11 @@ void MainWindow::dropEvent(QDropEvent *event)
     //const char *c_str2 = ba.data();
     //droppedFilePath.toStdString().c_str();
     //ui->lineEditresult->setText(droppedFilePath.toStdString().c_str());
-    TagLib::FileRef f(QFile::encodeName(droppedFilePath).constData(), true);
-    ui->lineEditresult->setText(QFile::encodeName(droppedFilePath).constData());
+    TagLib::FileRef f(path);
+    //TagLib::FileRef f(QFile::encodeName(droppedFilePath).constData(), true);
+    //ui->lineEditresult->setText(QFile::encodeName(droppedFilePath).constData());
     if(!f.isNull()){
+
         TagLib::Tag *tag = f.tag();
 
         ui->lineEditartist->setText(QString::fromStdString(tag->artist().to8Bit(true)));//to8bit makes sure unicode is displayed
@@ -77,6 +82,9 @@ void MainWindow::dropEvent(QDropEvent *event)
 
         }
 
+    }
+    else{
+        qDebug() << "Unable to open the file!";
     }
     event->acceptProposedAction();
 }
