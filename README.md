@@ -1,5 +1,7 @@
 # qtAlbum2folder
 
+qt version of https://github.com/TheCountOfPeru/jAlbum2folder
+
 ![alt-text](https://i.imgur.com/ZvrFSgu.png)
 
 One Paragraph of project description goes here
