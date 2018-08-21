@@ -42,3 +42,7 @@ unix|win32: LIBS += -L$$PWD/../../../git/vcpkg/installed/x64-windows/lib/ -ltag
 
 INCLUDEPATH += $$PWD/../../../git/vcpkg/installed/x64-windows/include
 DEPENDPATH += $$PWD/../../../git/vcpkg/installed/x64-windows/include
+
+RESOURCES += \
+    resource.qrc
+win32:RC_ICONS += qt-logo.ico

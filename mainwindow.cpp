@@ -2,12 +2,12 @@
 #include "ui_mainwindow.h"
 #include <QDragEnterEvent>
 #include <QMimeData>
-#include <QtDebug>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-    ui->lineEditresult->setText(tr("<drop content>"));
+    ui->lineEditresult->setText(tr(""));
 
     event->acceptProposedAction();
     emit changed(event->mimeData());
@@ -84,7 +84,7 @@ void MainWindow::dropEvent(QDropEvent *event)
 void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 {
 
-    ui->lineEditresult->setText("");
+    ui->lineEditresult->setText("<drop content here>");
     event->accept();
 }
 
@@ -98,7 +98,7 @@ void MainWindow::clear(){
     ui->lineEditdate->setText("");
     ui->lineEditedition->setText("");
     ui->lineEditname->setText("");
-    ui->lineEditresult->setText("");
+    ui->lineEditresult->setText("<drop content here>");
     ui->comboBoxcodec->setCurrentIndex(0);
     ui->comboBoxsource->setCurrentIndex(0);
 }
