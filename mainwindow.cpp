@@ -99,6 +99,7 @@ void MainWindow::clear(){
     ui->lineEditedition->setText("");
     ui->lineEditname->setText("");
     ui->lineEditresult->setText("<drop content here>");
+    ui->lineEditedition->setText("");
     ui->comboBoxcodec->setCurrentIndex(0);
     ui->comboBoxsource->setCurrentIndex(0);
 }
